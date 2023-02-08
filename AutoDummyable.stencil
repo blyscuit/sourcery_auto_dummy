@@ -1,0 +1,25 @@
+{% for import in argument.autoMockableTestableImports %}
+@testable import {{ import }}
+{% endfor %}
+{% for import in argument.autoMockableImports %}
+import {{ import }}
+{% endfor %}
+
+{% macro compareVariables variables %}
+        {% for variable in variables where variable.readAccess != "private" and variable.readAccess != "fileprivate" %}
+        {% if variable.typeName.unwrappedTypeName == "String" %}{{ variable.name }}: "{{ variable.name }}"{% if not forloop.last%}, {% endif %}
+        {% elif variable.typeName.unwrappedTypeName == "Int" %}{{ variable.name }}: 1{% if not forloop.last%}, {% endif %}
+        {% else %}{{ variable.name }}: .dummy{% if not forloop.last%}, {% endif %}
+        {% endif %}
+        {% endfor %}
+{% endmacro %}
+
+// MARK: - AutoEquatable for classes, protocols, structs
+{% for type in types.types|!enum where type.implements.AutoEquatable or type|annotated:"AutoEquatable" %}
+{% if type.supertype.based.Equatable or type.supertype.implements.AutoEquatable or type.supertype|annotated:"AutoEquatable" %}THIS WONT COMPILE, WE DONT SUPPORT INHERITANCE for AutoEquatable{% endif %}
+extension {{ type.name }} {
+    static let dummy = {{ type.name }}(
+        {% call compareVariables type.storedVariables %}
+    )
+}
+{% endfor %}

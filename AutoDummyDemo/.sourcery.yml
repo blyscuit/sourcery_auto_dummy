@@ -1,0 +1,9 @@
+sources:
+  - AutoDummyDemo
+templates:
+  - tools/sourcery/templates
+output:
+  AutoDummyDemoTests/Mocks/Sourcery 
+args:
+  testableImports:
+    - AutoDummyDemo

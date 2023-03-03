@@ -14,7 +14,7 @@ import {{ import }}
         {% endfor %}
 {% endmacro %}
 
-// MARK: - autoDummyable for classes, protocols, structs
+// MARK: - autoDummyable for classes & structs
 {% for type in types.types|!enum where type.implements.AutoDummyable or type|annotated:"AutoDummyable" %}
 {% if type.supertype.based.Equatable or type.supertype.implements.AutoDummyable or type.supertype|annotated:"AutoDummyable" %}THIS WONT COMPILE, WE DONT SUPPORT INHERITANCE for AutoDummyable{% endif %}
 extension {{ type.name }} {

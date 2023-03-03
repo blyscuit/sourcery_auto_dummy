@@ -4,7 +4,7 @@
 @testable import AutoDummyDemo
 
 
-// MARK: - autoDummyable for classes, protocols, structs
+// MARK: - autoDummyable for classes & structs
 extension NewModel {
     static let dummy = NewModel(
         item: "item"
